@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/sorting_random"
+        android:title="默认排序" />
+    <item
+        android:id="@+id/sorting_date_added"
+        android:title="时间排序" />
+    <item
+        android:id="@+id/sorting_toplist"
+        android:title="热门排序" />
+    <item
+        android:id="@+id/sorting_favorites"
+        android:title="收藏排序" />
+</menu>

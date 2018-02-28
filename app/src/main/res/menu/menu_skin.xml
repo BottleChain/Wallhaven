@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/skin_blue"
+        android:title="蓝色主题" />
+    <item
+        android:id="@+id/skin_red"
+        android:title="红色主题" />
+    <item
+        android:id="@+id/skin_green"
+        android:title="绿色主题" />
+    <item
+        android:id="@+id/skin_orange"
+        android:title="橙色主题" />
+
+</menu>
