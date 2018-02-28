@@ -121,7 +121,11 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                getPresenter().refresh(sorting);
+                if (mList.size() > 0) {
+                    getPresenter().refresh(sorting);
+                } else {
+                    mRefreshLayout.finishRefresh();
+                }
             }
         });
 
@@ -174,11 +178,15 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
                         sorting = "date_added";
                         break;
                     case R.id.sorting_toplist:
-                        sorting = "toplist";
+                        sorting = "views";
                         break;
                     case R.id.sorting_favorites:
                         sorting = "favorites";
                         break;
+                }
+                if (mList.size() > 0) {
+                    mRefreshLayout.autoRefresh();
+                    getPresenter().refresh(sorting);
                 }
                 return true;
             }
@@ -242,6 +250,7 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
         mList.clear();
         mList.addAll(images);
         mAdapter.notifyDataSetChanged();
+        mRecyclerView.scrollToPosition(0);
         mRefreshLayout.finishRefresh(true);
     }
 
@@ -253,6 +262,9 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
 
     @Override
     public void onSearchNone() {
+        mList.clear();
+        mAdapter.notifyDataSetChanged();
+        mFAB.hide();
         Snackbar.make(mFAB, "什么都没找到", Snackbar.LENGTH_SHORT).show();
         mRefreshLayout.finishRefresh(false);
     }

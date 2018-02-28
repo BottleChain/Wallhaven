@@ -1,9 +1,11 @@
 package com.njp.android.wallhaven.ui;
 
 import android.os.Build;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -30,10 +32,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initView();
+        initView(savedInstanceState);
 
         initEvent();
-
 
     }
 
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(int tabId) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                switch (tabId){
+                switch (tabId) {
                     case R.id.tab_home:
                         transaction.show(mHomeFragment).hide(mSearchFragment).hide(mStarFragment);
                         break;
@@ -59,16 +60,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void initView() {
-       mBottomBar = findViewById(R.id.bottom_bar);
-        mHomeFragment = new HomeFragment();
-        mSearchFragment = new SearchFragment();
-        mStarFragment = new StarFragment();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.content_layout, mHomeFragment)
-                .add(R.id.content_layout, mSearchFragment)
-                .add(R.id.content_layout, mStarFragment)
-                .commit();
+    private void initView(Bundle savedInstanceState) {
+        FragmentManager manager = getSupportFragmentManager();
+        mBottomBar = findViewById(R.id.bottom_bar);
+        if (savedInstanceState != null) {
+            mHomeFragment = (HomeFragment) manager.findFragmentByTag("home");
+            mSearchFragment = (SearchFragment) manager.findFragmentByTag("search");
+            mStarFragment = (StarFragment) manager.findFragmentByTag("star");
+        } else {
+            mHomeFragment = new HomeFragment();
+            mSearchFragment = new SearchFragment();
+            mStarFragment = new StarFragment();
+            manager.beginTransaction()
+                    .add(R.id.content_layout, mHomeFragment, "home")
+                    .add(R.id.content_layout, mSearchFragment, "search")
+                    .add(R.id.content_layout, mStarFragment, "star")
+                    .commit();
+        }
 
         changeSkin(SPUtil.getString("skin", "blue"));
     }
@@ -106,31 +114,30 @@ public class MainActivity extends AppCompatActivity {
     private void changeSkin(String color) {
         switch (color) {
             case "blue":
-                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_blue_light));
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_blue_dark));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     getWindow().setStatusBarColor(getResources().getColor(R.color.holo_blue_dark));
                 }
                 break;
             case "red":
-                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_red_light));
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_red_dark));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     getWindow().setStatusBarColor(getResources().getColor(R.color.holo_red_dark));
                 }
                 break;
             case "green":
-                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_green_light));
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_green_dark));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     getWindow().setStatusBarColor(getResources().getColor(R.color.holo_green_dark));
                 }
                 break;
             case "orange":
-                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_orange_light));
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_orange_dark));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     getWindow().setStatusBarColor(getResources().getColor(R.color.holo_orange_dark));
                 }
                 break;
         }
     }
-
 
 }

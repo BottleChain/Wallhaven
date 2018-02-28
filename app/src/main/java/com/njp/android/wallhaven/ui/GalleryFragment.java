@@ -114,7 +114,7 @@ public class GalleryFragment extends BaseFragment<GalleryPresenter> implements G
     @Override
     public void onVisible() {
         super.onVisible();
-        EventBus.getDefault().register(this);
+            EventBus.getDefault().register(this);
     }
 
     @Override
