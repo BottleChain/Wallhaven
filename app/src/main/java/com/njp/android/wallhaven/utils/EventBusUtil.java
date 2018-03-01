@@ -27,7 +27,8 @@ public class EventBusUtil {
         SKIN_PURPLE,
         SKIN_BROWN,
         SKIN_GRAY,
-        SKIN_BLUE_GRAY
+        SKIN_YELLOW,
+        SKIN_CYAN
     }
 
 }

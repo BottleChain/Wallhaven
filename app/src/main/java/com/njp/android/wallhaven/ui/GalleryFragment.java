@@ -158,8 +158,11 @@ public class GalleryFragment extends BaseFragment<GalleryPresenter> implements G
             case SKIN_BROWN:
                 changeSkin("brown");
                 break;
-            case SKIN_BLUE_GRAY:
-                changeSkin("blue gray");
+            case SKIN_YELLOW:
+                changeSkin("yellow");
+                break;
+            case SKIN_CYAN:
+                changeSkin("cyan");
                 break;
         }
     }
@@ -187,8 +190,11 @@ public class GalleryFragment extends BaseFragment<GalleryPresenter> implements G
             case "brown":
                 mRefreshLayout.setPrimaryColorsId(R.color.holo_brown);
                 break;
-            case "blue gray":
-                mRefreshLayout.setPrimaryColorsId(R.color.holo_blue_gray);
+            case "yellow":
+                mRefreshLayout.setPrimaryColorsId(R.color.holo_yellow);
+                break;
+            case "cyan":
+                mRefreshLayout.setPrimaryColorsId(R.color.holo_cyan);
                 break;
         }
     }

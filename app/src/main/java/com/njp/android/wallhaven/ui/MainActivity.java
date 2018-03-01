@@ -116,8 +116,11 @@ public class MainActivity extends AppCompatActivity {
             case SKIN_BROWN:
                 changeSkin("brown");
                 break;
-            case SKIN_BLUE_GRAY:
-                changeSkin("blue gray");
+            case SKIN_YELLOW:
+                changeSkin("yellow");
+                break;
+            case SKIN_CYAN:
+                changeSkin("cyan");
                 break;
         }
     }
@@ -166,10 +169,16 @@ public class MainActivity extends AppCompatActivity {
                     getWindow().setStatusBarColor(getResources().getColor(R.color.holo_brown));
                 }
                 break;
-            case "blue gray":
-                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_blue_gray));
+            case "yellow":
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_yellow));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_blue_gray));
+                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_yellow));
+                }
+                break;
+            case "cyan":
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_cyan));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_cyan));
                 }
                 break;
         }

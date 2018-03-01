@@ -224,8 +224,11 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
             case SKIN_BROWN:
                 changeSkin("brown");
                 break;
-            case SKIN_BLUE_GRAY:
-                changeSkin("blue gray");
+            case SKIN_YELLOW:
+                changeSkin("yellow");
+                break;
+            case SKIN_CYAN:
+                changeSkin("cyan");
                 break;
         }
     }
@@ -279,10 +282,15 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
                 mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_brown));
                 mRefreshLayout.setPrimaryColorsId(R.color.holo_brown);
                 break;
-            case "blue gray":
-                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_blue_gray));
-                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_blue_gray));
-                mRefreshLayout.setPrimaryColorsId(R.color.holo_blue_gray);
+            case "yellow":
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_yellow));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_yellow));
+                mRefreshLayout.setPrimaryColorsId(R.color.holo_yellow);
+                break;
+            case "cyan":
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_cyan));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_cyan));
+                mRefreshLayout.setPrimaryColorsId(R.color.holo_cyan);
                 break;
         }
     }
@@ -299,7 +307,7 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
     @Override
     public void onSearchError() {
         mRefreshLayout.finishRefresh(false);
-        SnakeBarUtil.getInstance().show("获取图片失败", mFAB);
+        SnakeBarUtil.getInstance().show("获取图片失败", mRefreshLayout);
     }
 
     @Override
@@ -307,8 +315,8 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
         mList.clear();
         mAdapter.notifyDataSetChanged();
         mRefreshLayout.finishRefresh(false);
-        SnakeBarUtil.getInstance().show("什么都没找到：建议使用英文搜索哦", mFAB);
         mFAB.hide();
+        SnakeBarUtil.getInstance().show("什么都没找到：建议使用英文搜索哦", mRefreshLayout);
     }
 
     @Override
@@ -321,12 +329,12 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
     @Override
     public void onLoadMoreError() {
         mRefreshLayout.finishLoadmore(false);
-        SnakeBarUtil.getInstance().show("获取图片失败", mFAB);
+        SnakeBarUtil.getInstance().show("获取图片失败", mRefreshLayout);
     }
 
     @Override
     public void onNoMore() {
         mRefreshLayout.finishLoadmore(false);
-        SnakeBarUtil.getInstance().show("没有更多了", mFAB);
+        SnakeBarUtil.getInstance().show("没有更多了", mRefreshLayout);
     }
 }

@@ -64,8 +64,11 @@ public class SnakeBarUtil {
             case SKIN_BROWN:
                 changeSkin("brown");
                 break;
-            case SKIN_BLUE_GRAY:
-                changeSkin("blue gray");
+            case SKIN_YELLOW:
+                changeSkin("yellow");
+                break;
+            case SKIN_CYAN:
+                changeSkin("cyan");
                 break;
         }
     }
@@ -93,8 +96,11 @@ public class SnakeBarUtil {
             case "brown":
                 color = R.color.holo_brown;
                 break;
-            case "blue gray":
-                color = R.color.holo_blue_gray;
+            case "yellow":
+                color = R.color.holo_yellow;
+                break;
+            case "cyan":
+                color = R.color.holo_cyan;
                 break;
         }
     }

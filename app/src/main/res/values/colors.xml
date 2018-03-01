@@ -12,8 +12,9 @@
     <color name="holo_orange">#ffffbb33</color>
     <color name="holo_purple">#ffaa66cc</color>
     <color name="holo_brown">#795548</color>
-    <color name="holo_gray">#9E9E9E</color>
-    <color name="holo_blue_gray">#607D8B</color>
+    <color name="holo_gray">#607D8B</color>
+    <color name="holo_yellow">#FDD835</color>
+    <color name="holo_cyan">#009688</color>
 
     <color name="gray_light">#44444444</color>
     <color name="gray_dark">#aa444444</color>

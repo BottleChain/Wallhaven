@@ -68,7 +68,7 @@ public class HomeFragment extends BaseFragment {
 
         mTabLayout.setupWithViewPager(mViewPager);
 
-        changeSkin(SPUtil.getString("skin","blue"));
+        changeSkin(SPUtil.getString("skin", "blue"));
 
         return view;
     }
@@ -93,43 +93,47 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void showPopMenu() {
-        PopupMenu popupMenu = new PopupMenu(getContext(),mIvSkin);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_skin,popupMenu.getMenu());
+        PopupMenu popupMenu = new PopupMenu(getContext(), mIvSkin);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_skin, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.skin_blue:
-                        SPUtil.putString("skin","blue");
+                        SPUtil.putString("skin", "blue");
                         EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_BLUE);
                         break;
                     case R.id.skin_red:
-                        SPUtil.putString("skin","red");
+                        SPUtil.putString("skin", "red");
                         EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_RED);
                         break;
                     case R.id.skin_green:
-                        SPUtil.putString("skin","green");
+                        SPUtil.putString("skin", "green");
                         EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_GREEN);
                         break;
                     case R.id.skin_orange:
-                        SPUtil.putString("skin","orange");
+                        SPUtil.putString("skin", "orange");
                         EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_ORANGE);
                         break;
                     case R.id.skin_purple:
-                        SPUtil.putString("skin","purple");
+                        SPUtil.putString("skin", "purple");
                         EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_PURPLE);
                         break;
                     case R.id.skin_gray:
-                        SPUtil.putString("skin","gray");
+                        SPUtil.putString("skin", "gray");
                         EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_GRAY);
                         break;
                     case R.id.skin_brown:
-                        SPUtil.putString("skin","brown");
+                        SPUtil.putString("skin", "brown");
                         EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_BROWN);
                         break;
-                    case R.id.skin_blue_gray:
-                        SPUtil.putString("skin","blue gray");
-                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_BLUE_GRAY);
+                    case R.id.skin_yellow:
+                        SPUtil.putString("skin", "yellow");
+                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_YELLOW);
+                        break;
+                    case R.id.skin_cyan:
+                        SPUtil.putString("skin", "cyan");
+                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_CYAN);
                         break;
 
                 }
@@ -151,8 +155,8 @@ public class HomeFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onChangeSkin(EventBusUtil.ChangeSkinEvent event){
-        switch (event){
+    public void onChangeSkin(EventBusUtil.ChangeSkinEvent event) {
+        switch (event) {
             case SKIN_BLUE:
                 changeSkin("blue");
                 break;
@@ -174,8 +178,11 @@ public class HomeFragment extends BaseFragment {
             case SKIN_BROWN:
                 changeSkin("brown");
                 break;
-            case SKIN_BLUE_GRAY:
-                changeSkin("blue gray");
+            case SKIN_YELLOW:
+                changeSkin("yellow");
+                break;
+            case SKIN_CYAN:
+                changeSkin("cyan");
                 break;
         }
     }
@@ -197,8 +204,8 @@ public class HomeFragment extends BaseFragment {
         return null;
     }
 
-    private void changeSkin(String skin){
-        switch (skin){
+    private void changeSkin(String skin) {
+        switch (skin) {
             case "blue":
                 mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_blue));
                 mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_blue));
@@ -227,9 +234,13 @@ public class HomeFragment extends BaseFragment {
                 mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_brown));
                 mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_brown));
                 break;
-            case "blue gray":
-                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_blue_gray));
-                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_blue_gray));
+            case "yellow":
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_yellow));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_yellow));
+                break;
+            case "cyan":
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_cyan));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_cyan));
                 break;
         }
     }
