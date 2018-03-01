@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.njp.android.wallhaven.utils.SPUtil;
+import com.njp.android.wallhaven.utils.SnakeBarUtil;
 import com.njp.android.wallhaven.utils.ToastUtil;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -12,6 +13,7 @@ import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
 import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 
 /**
@@ -32,7 +34,7 @@ public class MyApplication extends Application {
         SmartRefreshLayout.setDefaultRefreshFooterCreater(new DefaultRefreshFooterCreater() {
             @Override
             public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
-                return new ClassicsFooter(context).setDrawableSize(20);
+                return new BallPulseFooter(context);
             }
         });
     }
@@ -42,5 +44,6 @@ public class MyApplication extends Application {
         super.onCreate();
         SPUtil.init(this);
         ToastUtil.init(this);
+        SnakeBarUtil.getInstance().init(this,SPUtil.getString("skin", "blue"));
     }
 }

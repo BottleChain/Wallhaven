@@ -5,9 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.njp.android.wallhaven.R;
 import com.njp.android.wallhaven.utils.EventBusUtil;
@@ -94,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onChangeSkin(EventBusUtil.ChangeSkinEvent event) {
-        switch (event) {
+    public void onChangeSkin(EventBusUtil.ChangeSkinEvent event){
+        switch (event){
             case SKIN_BLUE:
                 changeSkin("blue");
                 break;
@@ -108,33 +105,69 @@ public class MainActivity extends AppCompatActivity {
             case SKIN_ORANGE:
                 changeSkin("orange");
                 break;
+            case SKIN_PURPLE:
+                changeSkin("purple");
+                break;
+            case SKIN_GRAY:
+                changeSkin("gray");
+                break;
+            case SKIN_BROWN:
+                changeSkin("brown");
+                break;
+            case SKIN_BLUE_GRAY:
+                changeSkin("blue gray");
+                break;
         }
     }
 
     private void changeSkin(String color) {
         switch (color) {
             case "blue":
-                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_blue_dark));
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_blue));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_blue_dark));
+                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_blue));
                 }
                 break;
             case "red":
-                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_red_dark));
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_red));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_red_dark));
+                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_red));
                 }
                 break;
             case "green":
-                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_green_dark));
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_green));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_green_dark));
+                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_green));
                 }
                 break;
             case "orange":
-                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_orange_dark));
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_orange));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_orange_dark));
+                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_orange));
+                }
+                break;
+            case "purple":
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_purple));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_purple));
+                }
+                break;
+            case "gray":
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_gray));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_gray));
+                }
+                break;
+            case "brown":
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_brown));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_brown));
+                }
+                break;
+            case "blue gray":
+                mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_blue_gray));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_blue_gray));
                 }
                 break;
         }

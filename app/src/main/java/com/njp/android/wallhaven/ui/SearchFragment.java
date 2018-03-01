@@ -22,6 +22,7 @@ import com.njp.android.wallhaven.bean.ImageInfo;
 import com.njp.android.wallhaven.presenter.SearchPresenter;
 import com.njp.android.wallhaven.utils.EventBusUtil;
 import com.njp.android.wallhaven.utils.SPUtil;
+import com.njp.android.wallhaven.utils.SnakeBarUtil;
 import com.njp.android.wallhaven.utils.ToastUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -170,6 +171,7 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                item.setChecked(true);
                 switch (item.getItemId()) {
                     case R.id.sorting_random:
                         sorting = "random";
@@ -209,6 +211,18 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
             case SKIN_ORANGE:
                 changeSkin("orange");
                 break;
+            case SKIN_PURPLE:
+                changeSkin("purple");
+                break;
+            case SKIN_GRAY:
+                changeSkin("gray");
+                break;
+            case SKIN_BROWN:
+                changeSkin("brown");
+                break;
+            case SKIN_BLUE_GRAY:
+                changeSkin("blue gray");
+                break;
         }
     }
 
@@ -227,20 +241,44 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
     private void changeSkin(String skin) {
         switch (skin) {
             case "blue":
-                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_blue_light));
-                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_blue_light));
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_blue));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_blue));
+                mRefreshLayout.setPrimaryColors(R.color.holo_blue);
                 break;
             case "red":
-                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_red_light));
-                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_red_light));
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_red));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_red));
+                mRefreshLayout.setPrimaryColors(R.color.holo_red);
                 break;
             case "green":
-                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_green_light));
-                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_green_light));
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_green));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_green));
+                mRefreshLayout.setPrimaryColors(R.color.holo_green);
                 break;
             case "orange":
-                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
-                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_orange_light));
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_orange));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_orange));
+                mRefreshLayout.setPrimaryColors(R.color.holo_orange);
+                break;
+            case "purple":
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_purple));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_purple));
+                mRefreshLayout.setPrimaryColors(R.color.holo_purple);
+                break;
+            case "gray":
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_gray));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_gray));
+                mRefreshLayout.setPrimaryColors(R.color.holo_gray);
+                break;
+            case "brown":
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_brown));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_brown));
+                mRefreshLayout.setPrimaryColors(R.color.holo_brown);
+                break;
+            case "blue gray":
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_blue_gray));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_blue_gray));
+                mRefreshLayout.setPrimaryColors(R.color.holo_blue_gray);
                 break;
         }
     }
@@ -256,8 +294,8 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
 
     @Override
     public void onSearchError() {
-        Snackbar.make(mFAB, "获取图片失败", Snackbar.LENGTH_SHORT).show();
         mRefreshLayout.finishRefresh(false);
+        SnakeBarUtil.getInstance().show("获取图片失败", mFAB);
     }
 
     @Override
@@ -265,8 +303,8 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
         mList.clear();
         mAdapter.notifyDataSetChanged();
         mFAB.hide();
-        Snackbar.make(mFAB, "什么都没找到", Snackbar.LENGTH_SHORT).show();
         mRefreshLayout.finishRefresh(false);
+        SnakeBarUtil.getInstance().show("什么都没找到", mFAB);
     }
 
     @Override
@@ -283,7 +321,7 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
 
     @Override
     public void onNoMore() {
-        Snackbar.make(mFAB, "没有更多了", Snackbar.LENGTH_SHORT).show();
         mRefreshLayout.finishLoadmore(false);
+        SnakeBarUtil.getInstance().show("没有更多了", mFAB);
     }
 }

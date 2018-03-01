@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,11 +115,29 @@ public class HomeFragment extends BaseFragment {
                         SPUtil.putString("skin","orange");
                         EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_ORANGE);
                         break;
+                    case R.id.skin_purple:
+                        SPUtil.putString("skin","purple");
+                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_PURPLE);
+                        break;
+                    case R.id.skin_gray:
+                        SPUtil.putString("skin","gray");
+                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_GRAY);
+                        break;
+                    case R.id.skin_brown:
+                        SPUtil.putString("skin","brown");
+                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_BROWN);
+                        break;
+                    case R.id.skin_blue_gray:
+                        SPUtil.putString("skin","blue gray");
+                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_BLUE_GRAY);
+                        break;
+
                 }
                 return true;
             }
         });
-    popupMenu.show();
+
+        popupMenu.show();
     }
 
 
@@ -145,6 +165,18 @@ public class HomeFragment extends BaseFragment {
             case SKIN_ORANGE:
                 changeSkin("orange");
                 break;
+            case SKIN_PURPLE:
+                changeSkin("purple");
+                break;
+            case SKIN_GRAY:
+                changeSkin("gray");
+                break;
+            case SKIN_BROWN:
+                changeSkin("brown");
+                break;
+            case SKIN_BLUE_GRAY:
+                changeSkin("blue gray");
+                break;
         }
     }
 
@@ -168,20 +200,36 @@ public class HomeFragment extends BaseFragment {
     private void changeSkin(String skin){
         switch (skin){
             case "blue":
-                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_blue_light));
-                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_blue_light));
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_blue));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_blue));
                 break;
             case "red":
-                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_red_light));
-                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_red_light));
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_red));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_red));
                 break;
             case "green":
-                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_green_light));
-                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_green_light));
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_green));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_green));
                 break;
             case "orange":
-                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
-                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_orange_light));
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_orange));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_orange));
+                break;
+            case "purple":
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_purple));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_purple));
+                break;
+            case "gray":
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_gray));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_gray));
+                break;
+            case "brown":
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_brown));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_brown));
+                break;
+            case "blue gray":
+                mTopBar.setBackgroundColor(getResources().getColor(R.color.holo_blue_gray));
+                mFAB.setBackgroundTintList(getResources().getColorStateList(R.color.holo_blue_gray));
                 break;
         }
     }

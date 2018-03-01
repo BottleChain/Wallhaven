@@ -19,11 +19,15 @@ public class EventBusUtil {
     /**
      * 换肤事件
      */
-    public enum ChangeSkinEvent{
+    public enum ChangeSkinEvent {
         SKIN_BLUE,
         SKIN_RED,
         SKIN_GREEN,
-        SKIN_ORANGE
+        SKIN_ORANGE,
+        SKIN_PURPLE,
+        SKIN_BROWN,
+        SKIN_GRAY,
+        SKIN_BLUE_GRAY
     }
 
 }

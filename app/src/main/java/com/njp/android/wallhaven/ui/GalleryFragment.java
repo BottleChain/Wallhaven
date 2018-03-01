@@ -13,6 +13,8 @@ import com.njp.android.wallhaven.adapter.ImagesAdapter;
 import com.njp.android.wallhaven.bean.ImageInfo;
 import com.njp.android.wallhaven.presenter.GalleryPresenter;
 import com.njp.android.wallhaven.utils.EventBusUtil;
+import com.njp.android.wallhaven.utils.SPUtil;
+import com.njp.android.wallhaven.utils.SnakeBarUtil;
 import com.njp.android.wallhaven.view.GalleryView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -72,6 +74,8 @@ public class GalleryFragment extends BaseFragment<GalleryPresenter> implements G
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mRecyclerView.setAdapter(mAdapter);
 
+        changeSkin(SPUtil.getString("skin", "blue"));
+
         return view;
     }
 
@@ -114,7 +118,7 @@ public class GalleryFragment extends BaseFragment<GalleryPresenter> implements G
     @Override
     public void onVisible() {
         super.onVisible();
-            EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -130,6 +134,65 @@ public class GalleryFragment extends BaseFragment<GalleryPresenter> implements G
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onChangeSkin(EventBusUtil.ChangeSkinEvent event) {
+        switch (event) {
+            case SKIN_BLUE:
+                changeSkin("blue");
+                break;
+            case SKIN_RED:
+                changeSkin("red");
+                break;
+            case SKIN_GREEN:
+                changeSkin("green");
+                break;
+            case SKIN_ORANGE:
+                changeSkin("orange");
+                break;
+            case SKIN_PURPLE:
+                changeSkin("purple");
+                break;
+            case SKIN_GRAY:
+                changeSkin("gray");
+                break;
+            case SKIN_BROWN:
+                changeSkin("brown");
+                break;
+            case SKIN_BLUE_GRAY:
+                changeSkin("blue gray");
+                break;
+        }
+    }
+
+    private void changeSkin(String skin) {
+        switch (skin) {
+            case "blue":
+                mRefreshLayout.setPrimaryColorsId(R.color.holo_blue);
+                break;
+            case "red":
+                mRefreshLayout.setPrimaryColorsId(R.color.holo_red);
+                break;
+            case "green":
+                mRefreshLayout.setPrimaryColorsId(R.color.holo_green);
+                break;
+            case "orange":
+                mRefreshLayout.setPrimaryColorsId(R.color.holo_orange);
+                break;
+            case "purple":
+                mRefreshLayout.setPrimaryColorsId(R.color.holo_purple);
+                break;
+            case "gray":
+                mRefreshLayout.setPrimaryColorsId(R.color.holo_gray);
+                break;
+            case "brown":
+                mRefreshLayout.setPrimaryColorsId(R.color.holo_brown);
+                break;
+            case "blue gray":
+                mRefreshLayout.setPrimaryColorsId(R.color.holo_blue_gray);
+                break;
+        }
+    }
+
     @Override
     public void onRefreshSuccess(List<ImageInfo> images) {
         mList.clear();
@@ -140,8 +203,8 @@ public class GalleryFragment extends BaseFragment<GalleryPresenter> implements G
 
     @Override
     public void onRefreshError() {
-        Snackbar.make(mRefreshLayout, "获取图片失败", Snackbar.LENGTH_SHORT).show();
         mRefreshLayout.finishRefresh(false);
+        SnakeBarUtil.getInstance().show("获取图片失败", mRefreshLayout);
     }
 
     @Override
@@ -154,11 +217,12 @@ public class GalleryFragment extends BaseFragment<GalleryPresenter> implements G
     @Override
     public void onLoadMoreError() {
         mRefreshLayout.finishLoadmore(false);
+        SnakeBarUtil.getInstance().show("获取图片失败", mRefreshLayout);
     }
 
     @Override
     public void onNoMore() {
         mRefreshLayout.finishLoadmore(false);
-        Snackbar.make(mRefreshLayout, "没有更多了", Snackbar.LENGTH_SHORT).show();
+        SnakeBarUtil.getInstance().show("没有更多了", mRefreshLayout);
     }
 }

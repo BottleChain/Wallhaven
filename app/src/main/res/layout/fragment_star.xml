@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:background="@color/holo_orange_dark"
+        android:background="@color/holo_orange"
         android:text="收藏"
         android:textColor="#fff"
         android:textSize="30sp"
