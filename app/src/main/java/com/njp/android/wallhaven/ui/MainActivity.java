@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 
 import com.njp.android.wallhaven.R;
+import com.njp.android.wallhaven.presenter.BasePresenter;
 import com.njp.android.wallhaven.utils.EventBusUtil;
 import com.njp.android.wallhaven.utils.SPUtil;
 import com.roughike.bottombar.BottomBar;
@@ -18,13 +19,18 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private BottomBar mBottomBar;
 
     private HomeFragment mHomeFragment;
     private SearchFragment mSearchFragment;
     private StarFragment mStarFragment;
+
+    @Override
+    public BasePresenter createPresenter() {
+        return null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                         transaction.show(mStarFragment).hide(mSearchFragment).hide(mHomeFragment);
                         break;
                 }
-                transaction.commit();
+                transaction.commitAllowingStateLoss();
             }
         });
     }
@@ -93,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onChangeSkin(EventBusUtil.ChangeSkinEvent event){
-        switch (event){
+    public void onChangeSkin(EventBusUtil.ChangeSkinEvent event) {
+        switch (event) {
             case SKIN_BLUE:
                 changeSkin("blue");
                 break;
@@ -124,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
 
     private void changeSkin(String color) {
         switch (color) {
@@ -179,6 +186,19 @@ public class MainActivity extends AppCompatActivity {
                 mBottomBar.setActiveTabColor(getResources().getColor(R.color.holo_cyan));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     getWindow().setStatusBarColor(getResources().getColor(R.color.holo_cyan));
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case DetailActivity.REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    String query = data.getStringExtra("query");
+                    mBottomBar.selectTabAtPosition(1);
+                    mSearchFragment.search(query);
                 }
                 break;
         }

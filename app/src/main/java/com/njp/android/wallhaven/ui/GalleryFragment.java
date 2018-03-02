@@ -1,5 +1,6 @@
 package com.njp.android.wallhaven.ui;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
@@ -104,6 +105,13 @@ public class GalleryFragment extends BaseFragment<GalleryPresenter> implements G
                 } else {
                     EventBus.getDefault().post(EventBusUtil.ScrollEvent.SCROLL_DOWN);
                 }
+            }
+        });
+
+        mAdapter.setListener(new ImagesAdapter.OnImageItemClickListener() {
+            @Override
+            public void onClick(ImageInfo imageInfo) {
+                DetailActivity.actionStart(getActivity(), imageInfo);
             }
         });
 

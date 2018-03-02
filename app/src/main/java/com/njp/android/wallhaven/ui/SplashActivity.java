@@ -12,23 +12,24 @@ import com.njp.android.wallhaven.R;
 import com.njp.android.wallhaven.presenter.SplashPresenter;
 import com.njp.android.wallhaven.view.SplashView;
 
-public class SplashActivity extends AppCompatActivity implements SplashView {
+public class SplashActivity extends BaseActivity<SplashPresenter> implements SplashView {
 
     private static final int SECONDS = 5;
 
-    private SplashPresenter mPresenter;
 
     private Button mBtnSkip;
     private ImageView mIvBackground;
     private ImageView mIvLogo;
 
     @Override
+    public SplashPresenter createPresenter() {
+        return new SplashPresenter();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-        mPresenter = new SplashPresenter();
-        mPresenter.attachView(this);
 
         initView();
 
@@ -44,7 +45,7 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
 
 
     private void initEvent() {
-        mPresenter.getImage();
+        getPresenter().getImage();
         mBtnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,24 +54,19 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mPresenter.detachView();
-    }
 
     @Override
     public void onImageResponse(String url) {
         Glide.with(this).load(url).into(mIvBackground);
         Glide.with(this).load(R.drawable.logo).into(mIvLogo);
-        mPresenter.startTimer(SECONDS);
+        getPresenter().startTimer(SECONDS);
     }
 
     @Override
     public void onImageError() {
         Glide.with(this).load(R.drawable.btn_bg_skip).into(mIvBackground);
         Glide.with(this).load(R.drawable.logo).into(mIvLogo);
-        mPresenter.startTimer(SECONDS);
+        getPresenter().startTimer(SECONDS);
     }
 
     @Override

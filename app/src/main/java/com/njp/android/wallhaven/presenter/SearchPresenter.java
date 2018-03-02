@@ -67,12 +67,9 @@ public class SearchPresenter extends BasePresenter<SearchView> {
                                 ImageInfo imageInfo = new ImageInfo();
                                 String id = element.attr("data-wallpaper-id");
                                 Element img = element.getElementsByTag("img").get(0);
-                                Element a = element.getElementsByTag("a").get(0);
                                 String smallImg = img.attr("data-src");
-                                String largeImg = a.attr("href");
                                 imageInfo.setId(id);
                                 imageInfo.setSmallImgUrl(smallImg);
-                                imageInfo.setLargeImgUrl(largeImg);
                                 imageInfoList.add(imageInfo);
                             }
                             if (getView() != null) {
@@ -133,12 +130,9 @@ public class SearchPresenter extends BasePresenter<SearchView> {
                                 ImageInfo imageInfo = new ImageInfo();
                                 String id = element.attr("data-wallpaper-id");
                                 Element img = element.getElementsByTag("img").get(0);
-                                Element a = element.getElementsByTag("a").get(0);
                                 String smallImg = img.attr("data-src");
-                                String largeImg = a.attr("href");
                                 imageInfo.setId(id);
                                 imageInfo.setSmallImgUrl(smallImg);
-                                imageInfo.setLargeImgUrl(largeImg);
                                 imageInfoList.add(imageInfo);
                             }
                             if (getView() != null) {

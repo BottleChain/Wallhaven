@@ -1,19 +1,21 @@
 package com.njp.android.wallhaven.ui;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.view.menu.MenuPopupHelper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.SimpleAdapter;
 
 import com.njp.android.wallhaven.R;
 import com.njp.android.wallhaven.adapter.FragmentsAdapter;
@@ -25,9 +27,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Home页面
@@ -86,9 +89,85 @@ public class HomeFragment extends BaseFragment {
         mIvSkin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopMenu();
+                showDialog();
             }
         });
+
+    }
+
+    private void showDialog() {
+
+        String[] names = {
+                "红色主题", "橙色主题", "黄色主题",
+                "绿色主题", "青色主题", "蓝色主题",
+                "紫色主题", "棕色主题", "灰色主题"
+        };
+
+        int[] colors = {
+                R.drawable.skin_red, R.drawable.skin_orange, R.drawable.skin_yellow,
+                R.drawable.skin_green, R.drawable.skin_cyan, R.drawable.skin_blue,
+                R.drawable.skin_purple, R.drawable.skin_brown, R.drawable.skin_gray
+        };
+
+        List<Map<String, Object>> items = new ArrayList<>();
+        for (int i = 0; i < names.length; i++) {
+            Map<String, Object> item = new HashMap();
+            item.put("name", names[i]);
+            item.put("color", colors[i]);
+            items.add(item);
+        }
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("选择主题")
+                .setAdapter(new SimpleAdapter(
+                                getContext(), items, R.layout.item_skin,
+                                new String[]{"name", "color"},
+                                new int[]{R.id.tv_name, R.id.iv_color}
+                        ),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        SPUtil.putString("skin", "red");
+                                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_RED);
+                                        break;
+                                    case 1:
+                                        SPUtil.putString("skin", "orange");
+                                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_ORANGE);
+                                        break;
+                                    case 2:
+                                        SPUtil.putString("skin", "yellow");
+                                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_YELLOW);
+                                        break;
+                                    case 3:
+                                        SPUtil.putString("skin", "green");
+                                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_GREEN);
+                                        break;
+                                    case 4:
+                                        SPUtil.putString("skin", "cyan");
+                                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_CYAN);
+                                        break;
+                                    case 5:
+                                        SPUtil.putString("skin", "blue");
+                                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_BLUE);
+                                        break;
+                                    case 6:
+                                        SPUtil.putString("skin", "purple");
+                                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_PURPLE);
+                                        break;
+                                    case 7:
+                                        SPUtil.putString("skin", "brown");
+                                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_BROWN);
+                                        break;
+                                    case 8:
+                                        SPUtil.putString("skin", "gray");
+                                        EventBus.getDefault().post(EventBusUtil.ChangeSkinEvent.SKIN_GRAY);
+                                        break;
+                                }
+                            }
+                        })
+                .show();
 
     }
 

@@ -3,6 +3,7 @@ package com.njp.android.wallhaven.utils;
 import com.njp.android.wallhaven.bean.BingImageInfo;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
@@ -48,6 +49,11 @@ public class RetrofitUtil {
                 @Query("q") String q,
                 @Query("sorting") String sorting,
                 @Query("page") int page
+        );
+
+        @GET("wallpaper/{id}")
+        Observable<ResponseBody> getDetailImage(
+                @Path("id") String id
         );
 
     }

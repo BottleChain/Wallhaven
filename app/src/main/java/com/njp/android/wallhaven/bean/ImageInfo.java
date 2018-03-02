@@ -1,18 +1,12 @@
 package com.njp.android.wallhaven.bean;
 
+import java.io.Serializable;
+
 /**
  * 图片信息实体类
  */
 
-public class ImageInfo {
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+public class ImageInfo implements Serializable {
 
     public String getSmallImgUrl() {
         return smallImgUrl;
@@ -22,18 +16,15 @@ public class ImageInfo {
         this.smallImgUrl = smallImgUrl;
     }
 
-    public String getLargeImgUrl() {
-        return largeImgUrl;
-    }
-
-    public void setLargeImgUrl(String largeImgUrl) {
-        this.largeImgUrl = largeImgUrl;
-    }
+    private String smallImgUrl;
 
     private String id;
 
-    private String smallImgUrl;
+    public String getId() {
+        return id;
+    }
 
-    private String largeImgUrl;
-
+    public void setId(String id) {
+        this.id = id;
+    }
 }

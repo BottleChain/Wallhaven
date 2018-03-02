@@ -31,4 +31,9 @@ public class EventBusUtil {
         SKIN_CYAN
     }
 
+    /**
+     * 搜索事件
+     * String
+     */
+
 }

@@ -161,11 +161,21 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
             }
         });
 
+        mAdapter.setListener(new ImagesAdapter.OnImageItemClickListener() {
+            @Override
+            public void onClick(ImageInfo imageInfo) {
+                DetailActivity.actionStart(getActivity(), imageInfo);
+            }
+        });
+
     }
 
-    private void search(String query) {
+    public void search(String query) {
         mRefreshLayout.autoRefresh();
-
+        mSearchView.onActionViewCollapsed();
+        mTvTitle.setText(query);
+        mTvTitle.setVisibility(View.VISIBLE);
+        mTopBar.setExpanded(true);
         getPresenter().searchImage(query, sorting);
     }
 
