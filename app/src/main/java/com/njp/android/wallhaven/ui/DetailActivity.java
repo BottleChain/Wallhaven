@@ -2,24 +2,20 @@ package com.njp.android.wallhaven.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.njp.android.wallhaven.R;
 import com.njp.android.wallhaven.bean.DetailImageInfo;
@@ -28,9 +24,9 @@ import com.njp.android.wallhaven.presenter.DetailPresenter;
 import com.njp.android.wallhaven.utils.SPUtil;
 import com.njp.android.wallhaven.utils.SnakeBarUtil;
 import com.njp.android.wallhaven.utils.ToastUtil;
+import com.njp.android.wallhaven.utils.glide.GlideUtil;
+import com.njp.android.wallhaven.utils.glide.LoadImageListener;
 import com.njp.android.wallhaven.view.DetailView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -41,11 +37,12 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
     public static final int REQUEST_CODE = 1001;
     private ImageInfo mImageInfo;
 
-    private List<DetailImageInfo.Tag> tags;
+    private DetailImageInfo mDetailImageInfo;
 
     private Toolbar mToolbar;
     private PhotoView mPhotoView;
     private SwipeRefreshLayout mRefreshLayout;
+    private NumberProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +61,15 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
         mPhotoView = findViewById(R.id.photo_view);
         mToolbar = findViewById(R.id.toolbar);
         mRefreshLayout = findViewById(R.id.refresh_layout);
+        mProgressBar = findViewById(R.id.progress_bar);
 
         mToolbar.setTitle(mImageInfo.getId());
         setSupportActionBar(mToolbar);
 
 
         changeSkin(SPUtil.getString("skin", "blue"));
+
+
     }
 
     private void initEvent() {
@@ -94,66 +94,93 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
     private void changeSkin(String skin) {
         switch (skin) {
             case "blue":
-                mToolbar.setBackgroundColor(getResources().getColor(R.color.holo_blue));
-                mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.holo_blue));
+                int colorBlue = getResources().getColor(R.color.holo_blue);
+                mToolbar.setBackgroundColor(colorBlue);
+                mRefreshLayout.setColorSchemeColors(colorBlue);
+                mProgressBar.setProgressTextColor(colorBlue);
+                mProgressBar.setReachedBarColor(colorBlue);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_blue));
+                    getWindow().setStatusBarColor(colorBlue);
                 }
                 break;
             case "red":
-                mToolbar.setBackgroundColor(getResources().getColor(R.color.holo_red));
-                mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.holo_red));
+                int colorRed = getResources().getColor(R.color.holo_red);
+                mToolbar.setBackgroundColor(colorRed);
+                mRefreshLayout.setColorSchemeColors(colorRed);
+                mProgressBar.setProgressTextColor(colorRed);
+                mProgressBar.setReachedBarColor(colorRed);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_red));
+                    getWindow().setStatusBarColor(colorRed);
                 }
                 break;
             case "green":
-                mToolbar.setBackgroundColor(getResources().getColor(R.color.holo_green));
-                mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.holo_green));
+                int colorGreen = getResources().getColor(R.color.holo_green);
+                mToolbar.setBackgroundColor(colorGreen);
+                mRefreshLayout.setColorSchemeColors(colorGreen);
+                mProgressBar.setProgressTextColor(colorGreen);
+                mProgressBar.setReachedBarColor(colorGreen);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_green));
+                    getWindow().setStatusBarColor(colorGreen);
                 }
                 break;
             case "orange":
-                mToolbar.setBackgroundColor(getResources().getColor(R.color.holo_orange));
-                mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.holo_orange));
+                int colorOrange = getResources().getColor(R.color.holo_orange);
+                mToolbar.setBackgroundColor(colorOrange);
+                mRefreshLayout.setColorSchemeColors(colorOrange);
+                mProgressBar.setProgressTextColor(colorOrange);
+                mProgressBar.setReachedBarColor(colorOrange);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_orange));
+                    getWindow().setStatusBarColor(colorOrange);
                 }
                 break;
             case "purple":
-                mToolbar.setBackgroundColor(getResources().getColor(R.color.holo_purple));
-                mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.holo_purple));
+                int colorPurple = getResources().getColor(R.color.holo_purple);
+                mToolbar.setBackgroundColor(colorPurple);
+                mRefreshLayout.setColorSchemeColors(colorPurple);
+                mProgressBar.setProgressTextColor(colorPurple);
+                mProgressBar.setReachedBarColor(colorPurple);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_purple));
+                    getWindow().setStatusBarColor(colorPurple);
                 }
                 break;
             case "gray":
-                mToolbar.setBackgroundColor(getResources().getColor(R.color.holo_gray));
-                mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.holo_gray));
+                int colorGray = getResources().getColor(R.color.holo_gray);
+                mToolbar.setBackgroundColor(colorGray);
+                mRefreshLayout.setColorSchemeColors(colorGray);
+                mProgressBar.setProgressTextColor(colorGray);
+                mProgressBar.setReachedBarColor(colorGray);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_gray));
+                    getWindow().setStatusBarColor(colorGray);
                 }
                 break;
             case "brown":
-                mToolbar.setBackgroundColor(getResources().getColor(R.color.holo_brown));
-                mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.holo_brown));
+                int colorBrown = getResources().getColor(R.color.holo_brown);
+                mToolbar.setBackgroundColor(colorBrown);
+                mRefreshLayout.setColorSchemeColors(colorBrown);
+                mProgressBar.setProgressTextColor(colorBrown);
+                mProgressBar.setReachedBarColor(colorBrown);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_brown));
+                    getWindow().setStatusBarColor(colorBrown);
                 }
                 break;
             case "yellow":
-                mToolbar.setBackgroundColor(getResources().getColor(R.color.holo_yellow));
-                mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.holo_yellow));
+                int colorYellow = getResources().getColor(R.color.holo_yellow);
+                mToolbar.setBackgroundColor(colorYellow);
+                mRefreshLayout.setColorSchemeColors(colorYellow);
+                mProgressBar.setProgressTextColor(colorYellow);
+                mProgressBar.setReachedBarColor(colorYellow);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_yellow));
+                    getWindow().setStatusBarColor(colorYellow);
                 }
                 break;
             case "cyan":
-                mToolbar.setBackgroundColor(getResources().getColor(R.color.holo_cyan));
-                mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.holo_cyan));
+                int colorCyan = getResources().getColor(R.color.holo_cyan);
+                mToolbar.setBackgroundColor(colorCyan);
+                mRefreshLayout.setColorSchemeColors(colorCyan);
+                mProgressBar.setProgressTextColor(colorCyan);
+                mProgressBar.setReachedBarColor(colorCyan);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.holo_cyan));
+                    getWindow().setStatusBarColor(colorCyan);
                 }
                 break;
         }
@@ -171,30 +198,38 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
     }
 
     @Override
-    public void onSuccess(DetailImageInfo imageInfo) {
+    public void onSuccess(final DetailImageInfo imageInfo) {
 
-        tags = imageInfo.getTags();
+        mDetailImageInfo = imageInfo;
 
-        Glide.with(this)
-                .load(imageInfo.getUrl())
-                .listener(new RequestListener<Drawable>() {
+        mRefreshLayout.setRefreshing(false);
+        mRefreshLayout.setEnabled(false);
 
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        SnakeBarUtil.getInstance().show("图片加载失败", mRefreshLayout);
-                        mRefreshLayout.setRefreshing(false);
-                        return false;
-                    }
+        GlideUtil.progressLoad(this, imageInfo.getUrl(), mPhotoView, new LoadImageListener() {
+            @Override
+            public void onStart() {
+                mProgressBar.setProgress(0);
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        mRefreshLayout.setRefreshing(false);
-                        mRefreshLayout.setEnabled(false);
-                        ToastUtil.show("图片" + mImageInfo.getId() + "加载完成");
-                        return false;
-                    }
-                })
-                .into(mPhotoView);
+            @Override
+            public void onProgress(int progress) {
+                mProgressBar.setProgress(progress);
+            }
+
+            @Override
+            public void onSuccess(@Nullable String path) {
+                mProgressBar.setVisibility(View.INVISIBLE);
+                ToastUtil.show("图片" + mImageInfo.getId() + "加载完成");
+            }
+
+            @Override
+            public void onFailure() {
+                mProgressBar.setVisibility(View.INVISIBLE);
+                mRefreshLayout.setEnabled(true);
+                ToastUtil.show("图片" + mImageInfo.getId() + "加载失败");
+            }
+        });
     }
 
     @Override
@@ -207,7 +242,7 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
                 ToastUtil.show("collect");
                 break;
             case R.id.tags:
-                if (tags != null && tags.size() > 0) {
+                if (mDetailImageInfo != null && mDetailImageInfo.getTags().size() > 0) {
                     showDialog();
                 }
                 break;
@@ -216,6 +251,7 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
     }
 
     private void showDialog() {
+        final List<DetailImageInfo.Tag> tags = mDetailImageInfo.getTags();
         String[] names = new String[tags.size()];
         for (int i = 0; i < names.length; i++) {
             names[i] = tags.get(i).getName();

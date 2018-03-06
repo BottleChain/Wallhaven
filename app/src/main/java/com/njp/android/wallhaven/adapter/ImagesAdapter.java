@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.njp.android.wallhaven.R;
 import com.njp.android.wallhaven.bean.ImageInfo;
+import com.njp.android.wallhaven.utils.glide.GlideUtil;
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final ImageInfo imageInfo = mImageInfoList.get(position);
-        Glide.with(mContext).load(imageInfo.getSmallImgUrl()).into(holder.image);
+        GlideUtil.simpleLoad(mContext,imageInfo.getSmallImgUrl(),holder.image);
         if (mListener != null) {
             holder.item.setOnClickListener(new View.OnClickListener() {
                 @Override

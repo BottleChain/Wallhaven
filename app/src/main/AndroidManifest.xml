@@ -12,6 +12,9 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.njp.android.wallhaven.utils.glide.MyGlideModule"
+            android:value="GlideModule" />
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleTask"

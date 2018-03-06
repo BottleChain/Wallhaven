@@ -1,15 +1,14 @@
 package com.njp.android.wallhaven.ui;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.njp.android.wallhaven.R;
 import com.njp.android.wallhaven.presenter.SplashPresenter;
+import com.njp.android.wallhaven.utils.glide.GlideUtil;
 import com.njp.android.wallhaven.view.SplashView;
 
 public class SplashActivity extends BaseActivity<SplashPresenter> implements SplashView {
@@ -57,15 +56,15 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
 
     @Override
     public void onImageResponse(String url) {
-        Glide.with(this).load(url).into(mIvBackground);
-        Glide.with(this).load(R.drawable.logo).into(mIvLogo);
+        GlideUtil.simpleLoad(this,url,mIvBackground);
+        GlideUtil.simpleLoad(this,R.drawable.logo,mIvLogo);
         getPresenter().startTimer(SECONDS);
     }
 
     @Override
     public void onImageError() {
-        Glide.with(this).load(R.drawable.btn_bg_skip).into(mIvBackground);
-        Glide.with(this).load(R.drawable.logo).into(mIvLogo);
+        GlideUtil.simpleLoad(this,R.drawable.btn_bg_skip,mIvBackground);
+        GlideUtil.simpleLoad(this,R.drawable.logo,mIvLogo);
         getPresenter().startTimer(SECONDS);
     }
 
