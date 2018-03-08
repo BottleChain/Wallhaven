@@ -51,6 +51,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
                 toMainActivity();
             }
         });
+        getPresenter().startTimer(SECONDS);
     }
 
 
@@ -65,7 +66,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     public void onImageError() {
         GlideUtil.simpleLoad(this,R.drawable.btn_bg_skip,mIvBackground);
         GlideUtil.simpleLoad(this,R.drawable.logo,mIvLogo);
-        getPresenter().startTimer(SECONDS);
     }
 
     @Override

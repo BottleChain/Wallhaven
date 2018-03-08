@@ -1,13 +1,19 @@
 package com.njp.android.wallhaven.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,6 +27,7 @@ import com.njp.android.wallhaven.R;
 import com.njp.android.wallhaven.bean.DetailImageInfo;
 import com.njp.android.wallhaven.bean.ImageInfo;
 import com.njp.android.wallhaven.presenter.DetailPresenter;
+import com.njp.android.wallhaven.utils.CopyFileUtil;
 import com.njp.android.wallhaven.utils.SPUtil;
 import com.njp.android.wallhaven.utils.SnakeBarUtil;
 import com.njp.android.wallhaven.utils.ToastUtil;
@@ -28,6 +35,7 @@ import com.njp.android.wallhaven.utils.glide.GlideUtil;
 import com.njp.android.wallhaven.utils.glide.LoadImageListener;
 import com.njp.android.wallhaven.view.DetailView;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -35,6 +43,7 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
 
     private static final String IMAGE_INFO = "imageInfo";
     public static final int REQUEST_CODE = 1001;
+    public static final int REQUEST_CODE_PERMISSION = 1001;
     private ImageInfo mImageInfo;
 
     private DetailImageInfo mDetailImageInfo;
@@ -83,7 +92,12 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getPresenter().getDetailImage(mImageInfo.getId());
+                if (mDetailImageInfo == null) {
+                    getPresenter().getDetailImage(mImageInfo.getId());
+                } else {
+                    loadImage(mDetailImageInfo.getUrl());
+                    mRefreshLayout.setRefreshing(false);
+                }
             }
         });
 
@@ -205,7 +219,11 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
         mRefreshLayout.setRefreshing(false);
         mRefreshLayout.setEnabled(false);
 
-        GlideUtil.progressLoad(this, imageInfo.getUrl(), mPhotoView, new LoadImageListener() {
+        loadImage(imageInfo.getUrl());
+    }
+
+    private void loadImage(String url) {
+        GlideUtil.progressLoad(getApplicationContext(), url, mPhotoView, new LoadImageListener() {
             @Override
             public void onStart() {
                 mProgressBar.setProgress(0);
@@ -220,7 +238,6 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
             @Override
             public void onSuccess(@Nullable String path) {
                 mProgressBar.setVisibility(View.INVISIBLE);
-                ToastUtil.show("图片" + mImageInfo.getId() + "加载完成");
             }
 
             @Override
@@ -236,7 +253,9 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.download:
-                ToastUtil.show("download");
+                if (initPermission()) {
+                    downLoad();
+                }
                 break;
             case R.id.collect:
                 ToastUtil.show("collect");
@@ -248,6 +267,51 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
                 break;
         }
         return false;
+    }
+
+    private void downLoad() {
+        if (mDetailImageInfo == null || mProgressBar.getVisibility() == View.VISIBLE) {
+            ToastUtil.show("图片正在加载中，请稍候");
+            return;
+        }
+        GlideUtil.progressDownload(getApplicationContext(), mDetailImageInfo.getUrl(), new LoadImageListener() {
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onProgress(int progress) {
+            }
+
+            @Override
+            public void onSuccess(@Nullable String path) {
+                String[] strings = mDetailImageInfo.getUrl().split("/");
+                String name = strings[strings.length - 1];
+                String targetPath = Environment.getExternalStorageDirectory().getPath() + "/Wallhaven";
+                if (CopyFileUtil.CopyFile(path, targetPath, name)) {
+                    String filePath = targetPath + "/" + name;
+                    ToastUtil.show("图片保存到" + filePath);
+                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(filePath))));
+
+                } else {
+                    ToastUtil.show("保存失败");
+                }
+            }
+
+            @Override
+            public void onFailure() {
+                ToastUtil.show("下载失败");
+            }
+        });
+    }
+
+    private boolean initPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSION);
+            return false;
+        }
     }
 
     private void showDialog() {
@@ -283,4 +347,16 @@ public class DetailActivity extends BaseActivity<DetailPresenter> implements Det
         activity.startActivityForResult(intent, REQUEST_CODE);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_PERMISSION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    downLoad();
+                } else {
+                    SnakeBarUtil.getInstance().show("无法下载", mRefreshLayout);
+                }
+                break;
+        }
+    }
 }
