@@ -1,5 +1,7 @@
 package com.njp.android.wallhaven.model;
 
+import com.njp.android.wallhaven.bean.ImageInfo;
+import com.njp.android.wallhaven.utils.ImageDao;
 import com.njp.android.wallhaven.utils.RetrofitUtil;
 
 import io.reactivex.Observable;

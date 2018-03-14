@@ -1,8 +1,8 @@
 package com.njp.android.wallhaven.ui;
 
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,8 +14,10 @@ import com.njp.android.wallhaven.adapter.ImagesAdapter;
 import com.njp.android.wallhaven.bean.ImageInfo;
 import com.njp.android.wallhaven.presenter.GalleryPresenter;
 import com.njp.android.wallhaven.utils.EventBusUtil;
+import com.njp.android.wallhaven.utils.ImageDao;
 import com.njp.android.wallhaven.utils.SPUtil;
 import com.njp.android.wallhaven.utils.SnakeBarUtil;
+import com.njp.android.wallhaven.utils.ToastUtil;
 import com.njp.android.wallhaven.view.GalleryView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -108,10 +110,33 @@ public class GalleryFragment extends BaseFragment<GalleryPresenter> implements G
             }
         });
 
-        mAdapter.setListener(new ImagesAdapter.OnImageItemClickListener() {
+        mAdapter.setClickListener(new ImagesAdapter.OnImageItemClickListener() {
             @Override
             public void onClick(ImageInfo imageInfo) {
                 DetailActivity.actionStart(getActivity(), imageInfo);
+            }
+        });
+
+        mAdapter.setLongClickListener(new ImagesAdapter.OnImageItemLongClickListener() {
+            @Override
+            public void onLongClick(final ImageInfo imageInfo, final boolean exists) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle(imageInfo.getId())
+                        .setMessage(exists ? "取消收藏咩？" : "收藏咩？")
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (exists){
+                                    ImageDao.delete(imageInfo);
+                                    ToastUtil.show("已取消收藏");
+                                }else {
+                                    ImageDao.insert(imageInfo);
+                                    ToastUtil.show("已收藏");
+                                }
+                                EventBus.getDefault().post(EventBusUtil.ChangeStarEvent.CHANGE_STAR_EVENT);
+                            }
+                        }).show();
             }
         });
 

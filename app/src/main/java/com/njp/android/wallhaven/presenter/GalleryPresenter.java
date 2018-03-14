@@ -149,4 +149,5 @@ public class GalleryPresenter extends BasePresenter<GalleryView> {
                 });
     }
 
+
 }

@@ -1,5 +1,7 @@
 package com.njp.android.wallhaven.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +22,7 @@ import com.njp.android.wallhaven.adapter.ImagesAdapter;
 import com.njp.android.wallhaven.bean.ImageInfo;
 import com.njp.android.wallhaven.presenter.SearchPresenter;
 import com.njp.android.wallhaven.utils.EventBusUtil;
+import com.njp.android.wallhaven.utils.ImageDao;
 import com.njp.android.wallhaven.utils.SPUtil;
 import com.njp.android.wallhaven.utils.SnakeBarUtil;
 import com.njp.android.wallhaven.utils.ToastUtil;
@@ -161,10 +164,33 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements com
             }
         });
 
-        mAdapter.setListener(new ImagesAdapter.OnImageItemClickListener() {
+        mAdapter.setClickListener(new ImagesAdapter.OnImageItemClickListener() {
             @Override
             public void onClick(ImageInfo imageInfo) {
                 DetailActivity.actionStart(getActivity(), imageInfo);
+            }
+        });
+
+        mAdapter.setLongClickListener(new ImagesAdapter.OnImageItemLongClickListener() {
+            @Override
+            public void onLongClick(final ImageInfo imageInfo, final boolean exists) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle(imageInfo.getId())
+                        .setMessage(exists ? "取消收藏咩？" : "收藏咩？")
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (exists) {
+                                    ImageDao.delete(imageInfo);
+                                    ToastUtil.show("已取消收藏");
+                                } else {
+                                    ImageDao.insert(imageInfo);
+                                    ToastUtil.show("已收藏");
+                                }
+                                EventBus.getDefault().post(EventBusUtil.ChangeStarEvent.CHANGE_STAR_EVENT);
+                            }
+                        }).show();
             }
         });
 

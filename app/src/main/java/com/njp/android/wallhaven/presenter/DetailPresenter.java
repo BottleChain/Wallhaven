@@ -3,6 +3,7 @@ package com.njp.android.wallhaven.presenter;
 import android.util.Log;
 
 import com.njp.android.wallhaven.bean.DetailImageInfo;
+import com.njp.android.wallhaven.bean.ImageInfo;
 import com.njp.android.wallhaven.model.DetailModel;
 import com.njp.android.wallhaven.view.DetailView;
 
@@ -88,5 +89,6 @@ public class DetailPresenter extends BasePresenter<DetailView> {
                 });
 
     }
+
 
 }

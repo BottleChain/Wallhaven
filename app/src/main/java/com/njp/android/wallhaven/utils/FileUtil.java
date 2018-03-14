@@ -1,5 +1,7 @@
 package com.njp.android.wallhaven.utils;
 
+import com.njp.android.wallhaven.bean.ImageInfo;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -11,7 +13,7 @@ import java.io.IOException;
  * 复制文件的工具类
  */
 
-public class CopyFileUtil {
+public class FileUtil {
 
     public static boolean CopyFile(String sourcePath, String targetPath, String targetName) {
         File source = new File(sourcePath);
@@ -57,6 +59,18 @@ public class CopyFileUtil {
             }
         }
         return true;
+    }
+
+    public static boolean isFinish(String targetPath, String targetName) {
+        File path = new File(targetPath);
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+        File target = new File(path, targetName);
+        if (target.exists()) {
+            return true;
+        }
+        return false;
     }
 
 }

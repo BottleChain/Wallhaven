@@ -36,4 +36,10 @@ public class EventBusUtil {
      * String
      */
 
+    /**
+     * 收藏改变事件
+     */
+    public enum ChangeStarEvent{
+        CHANGE_STAR_EVENT
+    }
 }

@@ -19,6 +19,47 @@
             app:navigationIcon="@drawable/back"
             app:title="ImageId">
 
+            <ImageView
+                android:id="@+id/iv_tags"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/tags" />
+
+            <ImageView
+                android:id="@+id/iv_star"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/star_white" />
+
+            <FrameLayout
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="20dp">
+
+                <ImageView
+                    android:id="@+id/iv_download"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/download" />
+
+                <ImageView
+                    android:id="@+id/iv_finish"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/finish"
+                    android:visibility="invisible"
+                    android:layout_gravity="right|bottom"/>
+
+            </FrameLayout>
+
+
+
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
@@ -36,13 +77,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <ImageView
+                android:id="@+id/iv_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
             <com.daimajia.numberprogressbar.NumberProgressBar
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:visibility="invisible"
-                android:layout_height="wrap_content" />
+                android:visibility="invisible" />
 
         </FrameLayout>
 

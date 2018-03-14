@@ -37,6 +37,7 @@ public class GlideUtil {
         Glide
                 .with(context)
                 .load(drawable)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
     }
 

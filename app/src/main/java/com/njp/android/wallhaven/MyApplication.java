@@ -3,6 +3,7 @@ package com.njp.android.wallhaven;
 import android.app.Application;
 import android.content.Context;
 
+import com.njp.android.wallhaven.utils.ImageDao;
 import com.njp.android.wallhaven.utils.SPUtil;
 import com.njp.android.wallhaven.utils.SnakeBarUtil;
 import com.njp.android.wallhaven.utils.ToastUtil;
@@ -44,6 +45,7 @@ public class MyApplication extends Application {
         super.onCreate();
         SPUtil.init(this);
         ToastUtil.init(this);
+        ImageDao.init(this);
         SnakeBarUtil.getInstance().init(this,SPUtil.getString("skin", "blue"));
     }
 }

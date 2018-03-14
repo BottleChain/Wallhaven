@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.njp.android.wallhaven.R;
 import com.njp.android.wallhaven.bean.ImageInfo;
+import com.njp.android.wallhaven.utils.ImageDao;
 import com.njp.android.wallhaven.utils.glide.GlideUtil;
 
 import java.util.List;
@@ -21,10 +22,15 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
 
     private Context mContext;
     private List<ImageInfo> mImageInfoList;
-    private OnImageItemClickListener mListener;
+    private OnImageItemClickListener mClickListener;
+    private OnImageItemLongClickListener mLongClickListener;
 
-    public void setListener(OnImageItemClickListener listener) {
-        mListener = listener;
+    public void setClickListener(OnImageItemClickListener clickListener) {
+        mClickListener = clickListener;
+    }
+
+    public void setLongClickListener(OnImageItemLongClickListener longClickListener) {
+        mLongClickListener = longClickListener;
     }
 
     public ImagesAdapter(Context context, List<ImageInfo> imageInfoList) {
@@ -42,12 +48,21 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final ImageInfo imageInfo = mImageInfoList.get(position);
-        GlideUtil.simpleLoad(mContext,imageInfo.getSmallImgUrl(),holder.image);
-        if (mListener != null) {
+        GlideUtil.simpleLoad(mContext, imageInfo.getSmallImgUrl(), holder.image);
+        if (mClickListener != null) {
             holder.item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.onClick(imageInfo);
+                    mClickListener.onClick(imageInfo);
+                }
+            });
+        }
+        if (mLongClickListener != null) {
+            holder.item.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mLongClickListener.onLongClick(imageInfo, ImageDao.exists(imageInfo));
+                    return false;
                 }
             });
         }
@@ -72,6 +87,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
 
     public interface OnImageItemClickListener {
         void onClick(ImageInfo imageInfo);
+    }
+
+    public interface OnImageItemLongClickListener {
+        void onLongClick(ImageInfo imageInfo, boolean exists);
     }
 
 }
